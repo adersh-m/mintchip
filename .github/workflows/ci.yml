@@ -28,13 +28,15 @@ jobs:
         with:
           version: 9                # lock version—don’t break builds
           run_install: false
-          cache: true
 
       - name: 📚  Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: 🔍  Lint
         run: pnpm lint
+
+      - name: 🧪  Unit tests
+        run: pnpm test -- --run;
 
       - name: 🛠️  Build
         run: pnpm build 
