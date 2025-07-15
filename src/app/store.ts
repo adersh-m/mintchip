@@ -9,7 +9,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
   },
-  devTools: import.meta.env.MODE !== 'production',
+  devTools: import.meta.env.DEV,
 });
 
 /** Infer RootState and AppDispatch from the store itself */
