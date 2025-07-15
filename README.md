@@ -2,74 +2,91 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+[![CI (build‑test‑lint)](https://github.com/adersh-m/mintchip/actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
+[![E2E (cypress-run)](https://github.com/adersh-m/mintchip/actions/workflows/e2e.yml/badge.svg)](../../actions/workflows/e2e.yml)
+
+> **Milestone 1 complete** — core tooling, routing, Redux store, auth service, CI matrix, and Cypress smoke test are live on `main`.
+
 ## Product Requirements Document (PRD)
 
-📋 **PRD Canvas**: [View PRD Canvas](https://your-prd-canvas-url-here.com)
+📋 **PRD Canvas**: [View PRD Canvas](https://github.com/adersh-m/mintchip/blob/main/docs/PRD_Personal_Finance_Expense_Tracker.md)
 
-> **Note**: Please replace the URL above with your actual PRD canvas URL.
+## Getting Started
 
-Currently, two official plugins are available:
+### Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js (v18 or higher)
+- pnpm (recommended) or npm
+- Firebase account for authentication and data storage
 
-## Expanding the ESLint configuration
+### Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/adersh-m/mintchip.git
+   cd mintchip
+   ```
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+3. **Set up Firebase**
+   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+   - Enable Authentication (Email/Password)
+   - Enable Firestore Database
+   - Copy your Firebase config to `src/lib/firebase.ts`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+4. **Start the development server**
+   ```bash
+   pnpm dev
+   ```
+
+### Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm test` - Run unit tests with coverage
+- `pnpm lint` - Run ESLint
+- `pnpm format` - Check code formatting with Prettier
+- `pnpm preview` - Preview production build locally
+
+## Tech Stack
+
+- **Frontend**: React 18 + TypeScript + Vite
+- **State Management**: Redux Toolkit
+- **Routing**: React Router v7
+- **Styling**: Tailwind CSS
+- **Authentication**: Firebase Auth
+- **Database**: Firestore
+- **Testing**: Vitest + React Testing Library
+- **E2E Testing**: Cypress
+- **Build Tool**: Vite
+- **Linting**: ESLint + Prettier
+
+## Project Structure
+
+```
+src/
+├── app/                    # Redux store configuration
+├── components/            # Reusable UI components
+├── features/              # Feature-based modules
+│   └── auth/             # Authentication logic
+├── lib/                  # External service configurations
+├── pages/                # Page components
+│   ├── Dashboard/        # Main dashboard
+│   ├── Login/           # Authentication pages
+│   └── Settings/        # User settings
+├── routes/              # Routing configuration
+└── styles/              # Global styles
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Key Features
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- 🔐 **Authentication**: Secure email/password auth with Firebase
+- 💰 **Expense Tracking**: Add, edit, and categorize transactions
+- 📊 **Budget Management**: Set monthly budgets and track progress
+- 📈 **Data Visualization**: Charts and graphs for spending insights
+- 🔄 **Offline Support**: PWA capabilities for offline usage
+- 📱 **Responsive Design**: Mobile-first design with Tailwind CSS
