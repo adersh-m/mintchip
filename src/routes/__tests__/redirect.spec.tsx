@@ -5,11 +5,17 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import authReducer from '../../features/auth/authSlice';
 import PrivateRoute from '../PrivateRoute';
 
+interface PreloadedRoot {
+  auth: {
+    status: 'idle' | 'authenticated' | 'error';
+  }
+}
+
 function setup(authStatus: 'idle' | 'authenticated') {
   const rootReducer = combineReducers({ auth: authReducer });
-  const store = configureStore({
+  const store = configureStore<PreloadedRoot>({
     reducer: rootReducer,
-    preloadedState: { auth: { status: authStatus } } as any,
+    preloadedState: { auth: { status: authStatus } }
   });
   render(
     <Provider store={store}>
