@@ -37,10 +37,10 @@ jobs:
         run: pnpm lint
 
       - name: 🧪  Unit tests
-        run: pnpm test --if-present
+        run: pnpm test 
 
       - name: 🛠️  Build
-        run: pnpm build --if-present
+        run: pnpm build 
 
       - name: 📤  Upload production-ready build (artifact)
         if: success()
