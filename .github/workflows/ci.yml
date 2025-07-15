@@ -22,13 +22,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
 
       - name: 📦  Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 9                # lock version—don’t break builds
           run_install: false
+          cache: true
 
       - name: 📚  Install dependencies
         run: pnpm install --frozen-lockfile
