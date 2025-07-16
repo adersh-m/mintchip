@@ -27,6 +27,11 @@ export const {
     transactionDeleted,
 } = transactionSlice.actions;
 
-export default transactionSlice.reducer;
+export const {
+    selectAll: selectAllTransactions,
+    selectById: selectTransactionById,
+    selectIds: selectTransactionIds,
+    selectEntities: selectTransactionEntities,
+} = adapter.getSelectors<RootState>((s) => s.transactions);
 
-export const transactionSelectors = adapter.getSelectors<RootState>((s) => s.transactions);
+export default transactionSlice.reducer;
