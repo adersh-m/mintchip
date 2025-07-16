@@ -34,7 +34,7 @@ test('displays no transactions message when empty', async () => {
     uninitialized: false,
   });
 
-  render(<TransactionList />);
+  render(<TransactionList monthIso='' category=''/>);
   
   // Should show the no-data message
   expect(screen.getByText(/No transactions found for this month/i)).toBeInTheDocument();
@@ -59,7 +59,7 @@ test('displays loading spinner when loading', () => {
     uninitialized: false,
   });
 
-  render(<TransactionList />);
+  render(<TransactionList monthIso='' category='' />);
   
   // Should show loading spinner
   expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -84,7 +84,7 @@ test('displays error message when error occurs', () => {
     uninitialized: false,
   });
 
-  render(<TransactionList />);
+  render(<TransactionList monthIso='' category='' />);
   
   // Should show error message
   expect(screen.getByText(/error/i)).toBeInTheDocument();
@@ -92,8 +92,8 @@ test('displays error message when error occurs', () => {
 
 test('renders transactions when data is available', () => {
   const mockTransactions = [
-    { id: '1', date: '2023-10-01', category: 'Food', amount: 100 },
-    { id: '2', date: '2023-10-02', category: 'Transport', amount: 50 },
+    { id: '1', date: '2023-10-01', category: 'Food', amount: 100, wallet: 'cash' as const },
+    { id: '2', date: '2023-10-02', category: 'Transport', amount: 50, wallet: 'card' as const },
   ];
 
   // Mock the hook to return transactions
@@ -114,9 +114,40 @@ test('renders transactions when data is available', () => {
     uninitialized: false,
   });
 
-  render(<TransactionList />);
+  render(<TransactionList monthIso='2023-10' category='All' />);
   
-  // Should show the transactions
+  // Should show both transactions when category is 'All'
   expect(screen.getByText(/food/i)).toBeInTheDocument();
+  expect(screen.getByText(/transport/i)).toBeInTheDocument();
+});
+
+test('filters transactions by category', () => {
+  const mockTransactions = [
+    { id: '1', date: '2023-10-01', category: 'Food', amount: 100, wallet: 'cash' as const },
+    { id: '2', date: '2023-10-02', category: 'Transport', amount: 50, wallet: 'card' as const },
+  ];
+
+  // Mock the hook to return transactions
+  mockUseGetTransactionsQuery.mockReturnValue({
+    data: mockTransactions,
+    isLoading: false,
+    isFetching: false,
+    isSuccess: true,
+    isError: false,
+    error: undefined,
+    refetch: vi.fn(),
+    fulfilledTimeStamp: 0,
+    status: 'fulfilled',
+    originalArgs: undefined,
+    endpointName: 'getTransactions',
+    requestId: 'test-request-id',
+    reset: vi.fn(),
+    uninitialized: false,
+  });
+
+  render(<TransactionList monthIso='2023-10' category='Transport' />);
+  
+  // Should only show Transport transactions when filtered by category
+  expect(screen.queryByText(/food/i)).not.toBeInTheDocument();
   expect(screen.getByText(/transport/i)).toBeInTheDocument();
 });
