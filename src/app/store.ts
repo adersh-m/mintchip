@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
+import transactionReducer from '../features/transactions/transactionsSlice';
+import { transactionApi } from '../features/transactions/api';
 
 /**
  * Configure root Redux store.
@@ -8,7 +10,10 @@ import authReducer from '../features/auth/authSlice';
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    transactions: transactionReducer,
+    [transactionApi.reducerPath]: transactionApi.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(transactionApi.middleware),
   devTools: import.meta.env.DEV,
 });
 
