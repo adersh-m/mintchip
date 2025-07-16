@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Spinner from '../components/Spinner';
+import TransactionsPage from '../pages/Transactions/TransactionsPage';
 
 const LoginPage = lazy(() => import('../pages/Login/LoginPage'));
 const DashboardPage = lazy(() => import('../pages/Dashboard/DashboardPage'));
@@ -13,6 +14,7 @@ export default function AppRoutes() {
       <Suspense fallback={<Spinner />}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
 
           {/* guarded routes */}
           <Route element={<PrivateRoute />}>

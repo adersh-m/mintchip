@@ -1,16 +1,22 @@
 import { useGetTransactionsQuery } from '../api';
 import Spinner from '../../../components/Spinner'; // Assuming you have a Spinner component
 import type { Transaction } from '../types';
+import { filterTransactions } from '../utils';
 
-export default function TransactionList() {
-    const monthIso = new Date().toISOString().slice(0, 7); // Get current month in YYYY-MM format
+interface TransactionListProps {
+    monthIso: string;
+    category: string;
+}
 
+export default function TransactionList({ monthIso, category }: TransactionListProps) {
+    
     const {
-        data: transactions,
+        data = [],
         isLoading,
         isError,
         error,
     } = useGetTransactionsQuery(monthIso);
+    const filteredTransactions = filterTransactions(data, monthIso, category);
 
     if (isLoading) {
         return <Spinner />; // Assuming you have a Spinner component for loading state
@@ -42,13 +48,13 @@ export default function TransactionList() {
         return <div className='text-red-500'>Error: {errorMessage}</div>; // Display error message if the query fails
     }
 
-    if (!transactions || transactions.length === 0) {
+    if (!filteredTransactions || filteredTransactions.length === 0) {
         return <div className='text-gray-500'>No transactions found for this month.</div>;
     }
 
     return (
         <ul>
-            {transactions.map((tx: Transaction) => (
+            {filteredTransactions.map((tx: Transaction) => (
                 <li key={tx.id} className="py-2 border-b">
                     <span className="font-semibold">{tx.date}</span> — {tx.category}:{' '}
                     <span className="text-green-600">₹{tx.amount}</span>
