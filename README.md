@@ -18,6 +18,7 @@ This template provides a minimal setup to get React working in Vite with HMR and
 - **[Budget Implementation Summary](docs/BUDGET_IMPLEMENTATION_SUMMARY.md)** - Detailed guide on budget management feature implementation using Redux Toolkit EntityAdapter
 - **[Transaction Implementation Summary](docs/TRANSACTION_IMPLEMENTATION_SUMMARY.md)** - Comprehensive overview of transaction management system with RTK Query integration
 - **[UI Testing Guide](docs/UI_TESTING_GUIDE.md)** - Step-by-step guide for testing the complete UI including navigation, forms, and mock API setup
+- **[Real API Integration Guide](docs/REAL_API_INTEGRATION_GUIDE.md)** - Complete migration guide from MSW to real backend API with step-by-step instructions
 
 ## Getting Started
 
