@@ -18,7 +18,7 @@ vi.mock("../../api", () => ({
     transactionApi: {
         reducerPath: 'transactionApi',
         reducer: () => ({}),
-        middleware: () => (next: any) => (action: any) => next(action),
+        middleware: () => (next: (action: unknown) => unknown) => (action: unknown) => next(action),
         endpoints: {},
     },
     useCreateTransactionMutation: () => [mockCreateTransaction, mockMutationResult],
