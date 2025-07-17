@@ -17,7 +17,7 @@ vi.mock('../../api', () => ({
     budgetApi: {
         reducerPath: 'budgetApi',
         reducer: vi.fn((state = {}) => state),
-        middleware: vi.fn(() => (next: any) => (action: any) => next(action)),
+        middleware: vi.fn(() => (next: (action: unknown) => unknown) => (action: unknown) => next(action)),
     },
     useCreateBudgetMutation: () => [
         mockCreateBudgetMutation,

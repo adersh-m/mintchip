@@ -42,7 +42,7 @@ export default function BudgetForm() {
             setCategory('');
             setLimit('');
             setMonth('');
-        } catch (error) {
+        } catch {
             // Error is handled by the mutation state
         }
     };
