@@ -3,16 +3,16 @@ import Spinner from '../../../components/Spinner';
 import type { Budget } from '../types';
 
 interface BudgetListProps {
-    month: string; // Format: YYYY-MM
+    monthIso: string; // Format: YYYY-MM
 }
 
-export default function BudgetList({ month }: BudgetListProps) {
+export default function BudgetList({ monthIso }: BudgetListProps) {
     const {
         data: budgets = [],
         isLoading,
         isError,
         error,
-    } = useGetBudgetsQuery(month);
+    } = useGetBudgetsQuery(monthIso);
 
     if (isLoading) {
         return <Spinner />;
@@ -52,7 +52,7 @@ export default function BudgetList({ month }: BudgetListProps) {
     return (
         <div className="space-y-4">
             <h3 className="text-lg font-medium text-gray-900">
-                Budgets for {month}
+                Budgets for {monthIso}
             </h3>
             <ul className="divide-y divide-gray-200">
                 {budgets.map((budget: Budget) => (

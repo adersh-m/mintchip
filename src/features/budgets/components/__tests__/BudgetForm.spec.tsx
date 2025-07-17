@@ -48,13 +48,16 @@ const renderWithProvider = (component: React.ReactElement) => {
 };
 
 describe('BudgetForm', () => {
+    let mockOnChangeMonth: ReturnType<typeof vi.fn>;
+    
     beforeEach(() => {
         vi.clearAllMocks();
+        mockOnChangeMonth = vi.fn();
         mockMutationResult.unwrap.mockResolvedValue({ id: '1', category: 'Food', amount: 500, month: '2024-01' });
     });
 
     it('renders all form fields', () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="2024-01" onChangeMonth={mockOnChangeMonth} />);
         
         expect(screen.getByLabelText(/category/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/budget limit/i)).toBeInTheDocument();
@@ -63,23 +66,21 @@ describe('BudgetForm', () => {
     });
 
     it('has submit button disabled when form is invalid', () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="" onChangeMonth={mockOnChangeMonth} />);
         
         const submitButton = screen.getByRole('button', { name: /add budget/i });
         expect(submitButton).toBeDisabled();
     });
 
     it('enables submit button when all fields are valid', async () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="2024-01" onChangeMonth={mockOnChangeMonth} />);
         
         const categoryInput = screen.getByLabelText(/category/i);
         const limitInput = screen.getByLabelText(/budget limit/i);
-        const monthInput = screen.getByLabelText(/month/i);
         const submitButton = screen.getByRole('button', { name: /add budget/i });
 
         fireEvent.change(categoryInput, { target: { value: 'Food' } });
         fireEvent.change(limitInput, { target: { value: '500' } });
-        fireEvent.change(monthInput, { target: { value: '2024-01' } });
 
         await waitFor(() => {
             expect(submitButton).not.toBeDisabled();
@@ -87,16 +88,14 @@ describe('BudgetForm', () => {
     });
 
     it('keeps submit button disabled with invalid limit', async () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="2024-01" onChangeMonth={mockOnChangeMonth} />);
         
         const categoryInput = screen.getByLabelText(/category/i);
         const limitInput = screen.getByLabelText(/budget limit/i);
-        const monthInput = screen.getByLabelText(/month/i);
         const submitButton = screen.getByRole('button', { name: /add budget/i });
 
         fireEvent.change(categoryInput, { target: { value: 'Food' } });
         fireEvent.change(limitInput, { target: { value: '0' } });
-        fireEvent.change(monthInput, { target: { value: '2024-01' } });
 
         await waitFor(() => {
             expect(submitButton).toBeDisabled();
@@ -104,16 +103,29 @@ describe('BudgetForm', () => {
     });
 
     it('keeps submit button disabled with empty category', async () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="2024-01" onChangeMonth={mockOnChangeMonth} />);
         
         const categoryInput = screen.getByLabelText(/category/i);
         const limitInput = screen.getByLabelText(/budget limit/i);
-        const monthInput = screen.getByLabelText(/month/i);
         const submitButton = screen.getByRole('button', { name: /add budget/i });
 
         fireEvent.change(categoryInput, { target: { value: '   ' } }); // Only whitespace
         fireEvent.change(limitInput, { target: { value: '500' } });
-        fireEvent.change(monthInput, { target: { value: '2024-01' } });
+
+        await waitFor(() => {
+            expect(submitButton).toBeDisabled();
+        });
+    });
+
+    it('keeps submit button disabled with empty month', async () => {
+        renderWithProvider(<BudgetForm month="" onChangeMonth={mockOnChangeMonth} />);
+        
+        const categoryInput = screen.getByLabelText(/category/i);
+        const limitInput = screen.getByLabelText(/budget limit/i);
+        const submitButton = screen.getByRole('button', { name: /add budget/i });
+
+        fireEvent.change(categoryInput, { target: { value: 'Food' } });
+        fireEvent.change(limitInput, { target: { value: '500' } });
 
         await waitFor(() => {
             expect(submitButton).toBeDisabled();
@@ -121,16 +133,14 @@ describe('BudgetForm', () => {
     });
 
     it('triggers mutation on valid form submission', async () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="2024-01" onChangeMonth={mockOnChangeMonth} />);
         
         const categoryInput = screen.getByLabelText(/category/i);
         const limitInput = screen.getByLabelText(/budget limit/i);
-        const monthInput = screen.getByLabelText(/month/i);
         const submitButton = screen.getByRole('button', { name: /add budget/i });
 
         fireEvent.change(categoryInput, { target: { value: 'Food' } });
         fireEvent.change(limitInput, { target: { value: '500' } });
-        fireEvent.change(monthInput, { target: { value: '2024-01' } });
 
         fireEvent.click(submitButton);
 
@@ -144,7 +154,7 @@ describe('BudgetForm', () => {
     });
 
     it('resets form on successful submission', async () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="2024-01" onChangeMonth={mockOnChangeMonth} />);
         
         const categoryInput = screen.getByLabelText(/category/i) as HTMLInputElement;
         const limitInput = screen.getByLabelText(/budget limit/i) as HTMLInputElement;
@@ -153,19 +163,28 @@ describe('BudgetForm', () => {
 
         fireEvent.change(categoryInput, { target: { value: 'Food' } });
         fireEvent.change(limitInput, { target: { value: '500' } });
-        fireEvent.change(monthInput, { target: { value: '2024-01' } });
 
         fireEvent.click(submitButton);
 
         await waitFor(() => {
             expect(categoryInput.value).toBe('');
             expect(limitInput.value).toBe('');
-            expect(monthInput.value).toBe('');
+            // Month should not be reset as it's controlled by parent
+            expect(monthInput.value).toBe('2024-01');
         });
     });
 
+    it('calls onChangeMonth when month input changes', () => {
+        renderWithProvider(<BudgetForm month="2024-01" onChangeMonth={mockOnChangeMonth} />);
+        
+        const monthInput = screen.getByLabelText(/month/i);
+        fireEvent.change(monthInput, { target: { value: '2024-02' } });
+
+        expect(mockOnChangeMonth).toHaveBeenCalledWith('2024-02');
+    });
+
     it('does not submit when form is invalid', async () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="" onChangeMonth={mockOnChangeMonth} />);
         
         const categoryInput = screen.getByLabelText(/category/i);
         const limitInput = screen.getByLabelText(/budget limit/i);
@@ -173,7 +192,7 @@ describe('BudgetForm', () => {
 
         fireEvent.change(categoryInput, { target: { value: 'Food' } });
         fireEvent.change(limitInput, { target: { value: '500' } });
-        // Month is left empty
+        // Month is empty
 
         fireEvent.click(submitButton);
 
@@ -183,16 +202,14 @@ describe('BudgetForm', () => {
     });
 
     it('trims whitespace from category', async () => {
-        renderWithProvider(<BudgetForm />);
+        renderWithProvider(<BudgetForm month="2024-01" onChangeMonth={mockOnChangeMonth} />);
         
         const categoryInput = screen.getByLabelText(/category/i);
         const limitInput = screen.getByLabelText(/budget limit/i);
-        const monthInput = screen.getByLabelText(/month/i);
         const submitButton = screen.getByRole('button', { name: /add budget/i });
 
         fireEvent.change(categoryInput, { target: { value: '  Food  ' } });
         fireEvent.change(limitInput, { target: { value: '500' } });
-        fireEvent.change(monthInput, { target: { value: '2024-01' } });
 
         fireEvent.click(submitButton);
 

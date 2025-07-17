@@ -55,7 +55,7 @@ describe('BudgetList', () => {
             error: null,
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
         
         expect(screen.getByTestId('spinner')).toBeInTheDocument();
     });
@@ -71,8 +71,8 @@ describe('BudgetList', () => {
             },
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByRole('alert')).toBeInTheDocument();
         expect(screen.getByText(/error: server error/i)).toBeInTheDocument();
     });
@@ -85,8 +85,8 @@ describe('BudgetList', () => {
             error: null,
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByText(/no budgets found for this month/i)).toBeInTheDocument();
     });
 
@@ -98,8 +98,8 @@ describe('BudgetList', () => {
             error: null,
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByText(/no budgets found for this month/i)).toBeInTheDocument();
     });
 
@@ -116,8 +116,8 @@ describe('BudgetList', () => {
             error: null,
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByText(/budgets for 2024-01/i)).toBeInTheDocument();
         expect(screen.getByText('Food')).toBeInTheDocument();
         expect(screen.getByText('Transport')).toBeInTheDocument();
@@ -137,8 +137,8 @@ describe('BudgetList', () => {
             error: null,
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByText('Spent: ₹100.00')).toBeInTheDocument();
         expect(screen.getByText('Remaining: ₹400.00')).toBeInTheDocument();
     });
@@ -155,8 +155,8 @@ describe('BudgetList', () => {
             error: null,
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByText('Over budget')).toBeInTheDocument();
     });
 
@@ -172,8 +172,8 @@ describe('BudgetList', () => {
             error: null,
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByText('Food')).toBeInTheDocument();
         expect(screen.getByText('₹500.00')).toBeInTheDocument();
         expect(screen.queryByText(/spent:/i)).not.toBeInTheDocument();
@@ -191,8 +191,8 @@ describe('BudgetList', () => {
             },
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByText(/error: network error/i)).toBeInTheDocument();
     });
 
@@ -206,8 +206,8 @@ describe('BudgetList', () => {
             },
         });
 
-        renderWithProvider(<BudgetList month="2024-01" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-01" />);
+
         expect(screen.getByText(/error: something went wrong/i)).toBeInTheDocument();
     });
 
@@ -219,8 +219,8 @@ describe('BudgetList', () => {
             error: null,
         });
 
-        renderWithProvider(<BudgetList month="2024-03" />);
-        
+        renderWithProvider(<BudgetList monthIso="2024-03" />);
+
         expect(mockQuery).toHaveBeenCalledWith('2024-03');
     });
 });
