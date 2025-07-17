@@ -3,7 +3,7 @@ import type { Budget } from "./types";
 
 export const budgetApi = createApi({
     reducerPath: 'budgetApi',
-    baseQuery: fetchBaseQuery({ baseUrl: '/api/budgets' }),
+    baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
     tagTypes: ['Budgets'],
     endpoints: (builder) => ({
         getBudgets: builder.query<Budget[], string>({

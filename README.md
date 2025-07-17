@@ -9,7 +9,16 @@ This template provides a minimal setup to get React working in Vite with HMR and
 
 ## Product Requirements Document (PRD)
 
-📋 **PRD Canvas**: [View PRD Canvas](https://github.com/adersh-m/mintchip/blob/main/docs/PRD_Personal_Finance_Expense_Tracker.md)
+📋 **PRD Canvas**: [View PRD Canvas](docs/PRD_Personal_Finance_Expense_Tracker.md)
+
+## Documentation
+
+📚 **Project Documentation**: Comprehensive guides and implementation details
+
+- **[Budget Implementation Summary](docs/BUDGET_IMPLEMENTATION_SUMMARY.md)** - Detailed guide on budget management feature implementation using Redux Toolkit EntityAdapter
+- **[Transaction Implementation Summary](docs/TRANSACTION_IMPLEMENTATION_SUMMARY.md)** - Comprehensive overview of transaction management system with RTK Query integration
+- **[UI Testing Guide](docs/UI_TESTING_GUIDE.md)** - Step-by-step guide for testing the complete UI including navigation, forms, and mock API setup
+- **[Real API Integration Guide](docs/REAL_API_INTEGRATION_GUIDE.md)** - Complete migration guide from MSW to real backend API with step-by-step instructions
 
 ## Getting Started
 

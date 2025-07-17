@@ -2,10 +2,14 @@ import { useState } from "react";
 import { useCreateBudgetMutation } from "../api";
 import type { Budget } from "../types";
 
-export default function BudgetForm() {
+interface BudgetFormProps {
+    month: string;
+    onChangeMonth: (month: string) => void;
+}
+
+export default function BudgetForm({ month, onChangeMonth }: BudgetFormProps) {
     const [category, setCategory] = useState('');
     const [limit, setLimit] = useState('');
-    const [month, setMonth] = useState('');
 
     const [createBudget, { isLoading, isError, error }] = useCreateBudgetMutation();
 
@@ -41,7 +45,6 @@ export default function BudgetForm() {
             // Reset form on success
             setCategory('');
             setLimit('');
-            setMonth('');
         } catch {
             // Error is handled by the mutation state
         }
@@ -93,7 +96,7 @@ export default function BudgetForm() {
                     id="month"
                     type="month"
                     value={month}
-                    onChange={(e) => setMonth(e.target.value)}
+                    onChange={(e) => onChangeMonth(e.target.value)}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
             </div>
