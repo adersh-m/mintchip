@@ -96,7 +96,7 @@ describe("TransactionForm", () => {
     it("shows loading state when isLoading is true", () => {
         mockMutationResult.isLoading = true;
         renderWithProvider(<TransactionForm />);
-        expect(screen.getByRole("button")).toHaveTextContent("Adding...");
+        expect(screen.getByRole("button")).toHaveTextContent("Adding Transaction...");
     });
 
     it("shows error message when isError is true", () => {

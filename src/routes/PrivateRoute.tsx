@@ -6,11 +6,7 @@ export default function PrivateRoute() {
     const isAuthenticated = status === "authenticated";
     const location = useLocation();
 
-    // For testing purposes, allow access to all routes
-    // TODO: Re-enable authentication check in production
-    const allowTestingAccess = true;
-
-    if(!isAuthenticated && !allowTestingAccess) {
+    if(!isAuthenticated) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
