@@ -12,11 +12,18 @@ export default function BudgetPage() {
             return prev;
         });
     }
+    
     return (
-        <div className="space-y-6 p-4">
-            <h1 className="text-2xl font-bold">Budget for {month}</h1>
-            <BudgetForm month={month} onChangeMonth={handleChangeMonth} />
-            <BudgetList monthIso={month} />
+        <div className="max-w-4xl mx-auto p-6 space-y-8">
+            <div className="bg-white rounded-lg shadow-md p-6">
+                <h1 className="text-2xl font-bold text-gray-900 mb-6">Create Budget for {month}</h1>
+                <BudgetForm month={month} onChangeMonth={handleChangeMonth} />
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">Budget Overview</h2>
+                <BudgetList monthIso={month} />
+            </div>
         </div>
     );
 }

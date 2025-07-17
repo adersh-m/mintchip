@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Spinner from '../components/Spinner';
+import Layout from '../components/Layout';
 import TransactionsPage from '../pages/Transactions/TransactionsPage';
 import BudgetPage from '../pages/BudgetPage';
 
@@ -20,10 +21,10 @@ export default function AppRoutes() {
 
           {/* guarded routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/transactions" element={<TransactionsPage />} />
-            <Route path="/budgets" element={<BudgetPage />} />
+            <Route path="/" element={<Layout><DashboardPage /></Layout>} />
+            <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
+            <Route path="/transactions" element={<Layout><TransactionsPage /></Layout>} />
+            <Route path="/budgets" element={<Layout><BudgetPage /></Layout>} />
           </Route>
 
           {/* fallback */}

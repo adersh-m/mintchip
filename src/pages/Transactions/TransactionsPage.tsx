@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import CategoryFilter from "../../features/transactions/components/CategoryFilter";
 import MonthPicker from "../../features/transactions/components/MonthPicker";
 import TransactionList from "../../features/transactions/components/TransactionList";
+import TransactionForm from "../../features/transactions/components/TransactionForm";
 
 export default function TransactionsPage() {
     const [params, setParams] = useSearchParams();
@@ -23,12 +24,26 @@ export default function TransactionsPage() {
     }
 
     return (
-        <div className="space-y-4">
-            <div className="flex gap-2">
-                <MonthPicker value={month} onChange={updatedMonth} />
-                <CategoryFilter value={category} onChange={updatedCategory} />
+        <div className="max-w-4xl mx-auto p-6 space-y-8">
+            <div className="bg-white rounded-lg shadow-md p-6">
+                <h1 className="text-2xl font-bold text-gray-900 mb-6">Add New Transaction</h1>
+                <TransactionForm />
             </div>
-            <TransactionList monthIso={month} category={category} />
+            
+            <div className="bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">Transaction History</h2>
+                <div className="flex gap-4 mb-6">
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Month</label>
+                        <MonthPicker value={month} onChange={updatedMonth} />
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <CategoryFilter value={category} onChange={updatedCategory} />
+                    </div>
+                </div>
+                <TransactionList monthIso={month} category={category} />
+            </div>
         </div>
     )
 }
