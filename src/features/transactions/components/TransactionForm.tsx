@@ -49,7 +49,7 @@ export default function TransactionForm() {
             setCategory('');
             setWallet('cash');
             setNote('');
-        } catch (error) {
+        } catch {
             // Error is handled by RTK Query
         }
     };
