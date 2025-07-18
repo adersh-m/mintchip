@@ -4,7 +4,7 @@ import type { Transaction } from './types';
 export const transactionApi = createApi({
     reducerPath: 'transactionApi',
     baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-    tagTypes: ['Transaction'],
+    tagTypes: ['Transaction', 'Budgets'], // 👈 Add Budgets tag type for cross-invalidation
     endpoints: (builder) => ({
         getTransactions: builder.query<Transaction[], string>({
             query: (monthIso) => `transactions?month=${monthIso}`,
@@ -20,7 +20,10 @@ export const transactionApi = createApi({
                 method: 'POST',
                 body: transaction,
             }),
-            invalidatesTags: [{ type: 'Transaction', id: 'PARTIAL-LIST' }],
+            invalidatesTags: [
+                { type: 'Transaction', id: 'PARTIAL-LIST' },
+                'Budgets', // 👈 Also invalidate budgets since spending affects budgets
+            ],
         }),
     }),
 });
