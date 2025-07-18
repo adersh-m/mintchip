@@ -4,6 +4,7 @@ import transactionReducer from '../features/transactions/transactionsSlice';
 import budgetReducer from '../features/budgets/budgetsSlice';
 import { transactionApi } from '../features/transactions/api';
 import { budgetApi } from '../features/budgets/api';
+import { reportsApi } from '../features/reports/api';
 
 /**
  * Configure root Redux store.
@@ -16,9 +17,10 @@ export const store = configureStore({
     budgets: budgetReducer,
     [transactionApi.reducerPath]: transactionApi.reducer,
     [budgetApi.reducerPath]: budgetApi.reducer,
+    [reportsApi.reducerPath]: reportsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(transactionApi.middleware, budgetApi.middleware),
+    getDefaultMiddleware().concat(transactionApi.middleware, budgetApi.middleware, reportsApi.middleware),
   devTools: import.meta.env.DEV,
 });
 
