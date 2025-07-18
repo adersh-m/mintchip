@@ -109,11 +109,28 @@ export const handlers = [
         const filteredBudgets = mockBudgets.filter(b => 
             b.month === month
         );
+
+        // Calculate actual spending from transactions for each budget
+        const budgetsWithSpending = filteredBudgets.map(budget => {
+            // Find all transactions for this category and month
+            const categoryTransactions = mockTransactions.filter(t => 
+                t.category === budget.category && 
+                t.date.startsWith(budget.month)
+            );
+            
+            // Calculate total spending
+            const spent = categoryTransactions.reduce((total, t) => total + t.amount, 0);
+            
+            return {
+                ...budget,
+                spent
+            };
+        });
         
-        console.log('MSW: Returning budgets:', filteredBudgets);
+        console.log('MSW: Returning budgets with calculated spending:', budgetsWithSpending);
         return res(
             ctx.delay(200),
-            ctx.json(filteredBudgets)
+            ctx.json(budgetsWithSpending)
         );
     }),
 
