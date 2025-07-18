@@ -1,6 +1,7 @@
 import { setupWorker, rest } from 'msw';
 import type { Transaction } from '../features/transactions/types';
 import type { Budget } from '../features/budgets/types';
+import type { CategoryReport, TimelineReport } from '../features/reports/types';
 
 // Mock data
 const mockTransactions: Transaction[] = [
@@ -142,6 +143,121 @@ export const handlers = [
                 ctx.json({ error: 'Failed to create budget' })
             );
         }
+    }),
+
+    // Report endpoints
+    rest.get('/api/reports/category', (req, res, ctx) => {
+        console.log('MSW: GET /api/reports/category');
+        const startDate = req.url.searchParams.get('startDate');
+        const endDate = req.url.searchParams.get('endDate');
+        const category = req.url.searchParams.get('category');
+        
+        console.log('MSW: Report params:', { startDate, endDate, category });
+        
+        // Filter transactions by date range and category
+        const filteredTransactions = mockTransactions.filter(t => {
+            const transactionDate = new Date(t.date);
+            const start = startDate ? new Date(startDate) : new Date('1900-01-01');
+            const end = endDate ? new Date(endDate) : new Date('2100-12-31');
+            
+            const inDateRange = transactionDate >= start && transactionDate <= end;
+            const inCategory = !category || t.category === category;
+            
+            return inDateRange && inCategory;
+        });
+        
+        // Group by category
+        const categoryTotals = filteredTransactions.reduce((acc, t) => {
+            if (!acc[t.category]) {
+                acc[t.category] = { totalAmount: 0, transactionCount: 0 };
+            }
+            acc[t.category].totalAmount += t.amount;
+            acc[t.category].transactionCount += 1;
+            return acc;
+        }, {} as Record<string, { totalAmount: number; transactionCount: number }>);
+        
+        const totalAmount = Object.values(categoryTotals).reduce((sum, cat) => sum + cat.totalAmount, 0);
+        
+        const categories = Object.entries(categoryTotals).map(([category, data]) => ({
+            category,
+            totalAmount: data.totalAmount,
+            transactionCount: data.transactionCount,
+            percentage: totalAmount > 0 ? Math.round((data.totalAmount / totalAmount) * 100) : 0
+        }));
+        
+        const categoryReport: CategoryReport = {
+            categories,
+            totalAmount,
+            period: {
+                start: startDate || '1900-01-01',
+                end: endDate || '2100-12-31'
+            }
+        };
+        
+        console.log('MSW: Returning category report:', categoryReport);
+        return res(
+            ctx.delay(200),
+            ctx.json(categoryReport)
+        );
+    }),
+
+    rest.get('/api/reports/timeline', (req, res, ctx) => {
+        console.log('MSW: GET /api/reports/timeline');
+        const startDate = req.url.searchParams.get('startDate');
+        const endDate = req.url.searchParams.get('endDate');
+        const category = req.url.searchParams.get('category');
+        
+        console.log('MSW: Report params:', { startDate, endDate, category });
+        
+        // Filter transactions by date range and category
+        const filteredTransactions = mockTransactions.filter(t => {
+            const transactionDate = new Date(t.date);
+            const start = startDate ? new Date(startDate) : new Date('1900-01-01');
+            const end = endDate ? new Date(endDate) : new Date('2100-12-31');
+            
+            const inDateRange = transactionDate >= start && transactionDate <= end;
+            const inCategory = !category || t.category === category;
+            
+            return inDateRange && inCategory;
+        });
+        
+        // Group by date
+        const dateMap = filteredTransactions.reduce((acc, t) => {
+            const date = t.date;
+            if (!acc[date]) {
+                acc[date] = { totalAmount: 0, transactionCount: 0, categories: {} };
+            }
+            acc[date].totalAmount += t.amount;
+            acc[date].transactionCount += 1;
+            acc[date].categories[t.category] = (acc[date].categories[t.category] || 0) + t.amount;
+            return acc;
+        }, {} as Record<string, { totalAmount: number; transactionCount: number; categories: Record<string, number> }>);
+        
+        const timeline = Object.entries(dateMap).map(([date, data]) => ({
+            date,
+            totalAmount: data.totalAmount,
+            transactionCount: data.transactionCount,
+            categories: data.categories
+        })).sort((a, b) => a.date.localeCompare(b.date));
+        
+        const totalAmount = timeline.reduce((sum, day) => sum + day.totalAmount, 0);
+        const allCategories = Array.from(new Set(filteredTransactions.map(t => t.category)));
+        
+        const timelineReport: TimelineReport = {
+            timeline,
+            totalAmount,
+            period: {
+                start: startDate || '1900-01-01',
+                end: endDate || '2100-12-31'
+            },
+            categories: allCategories
+        };
+        
+        console.log('MSW: Returning timeline report:', timelineReport);
+        return res(
+            ctx.delay(200),
+            ctx.json(timelineReport)
+        );
     })
 ];
 
