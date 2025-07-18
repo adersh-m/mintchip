@@ -33,7 +33,21 @@ const LineChart: React.FC<LineChartProps> = React.memo(({ data }) => {
     })), [data.timeline]
   );
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  interface TooltipProps {
+    active?: boolean;
+    payload?: Array<{
+      payload: {
+        date: string;
+        fullDate: string;
+        totalAmount: number;
+        transactionCount: number;
+        [key: string]: unknown;
+      };
+    }>;
+    label?: string;
+  }
+
+  const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (

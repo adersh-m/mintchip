@@ -52,19 +52,19 @@ export class PerformanceMonitor {
       // Largest Contentful Paint
       const lcpEntries = performance.getEntriesByType('largest-contentful-paint');
       if (lcpEntries.length > 0) {
-        const lcp = lcpEntries[lcpEntries.length - 1] as any;
+        const lcp = lcpEntries[lcpEntries.length - 1] as PerformanceEntry & { startTime: number };
         console.log(`🎯 LCP: ${lcp.startTime.toFixed(2)}ms`);
       }
 
       // First Input Delay
       const fidEntries = performance.getEntriesByType('first-input');
       if (fidEntries.length > 0) {
-        const fid = fidEntries[0] as any;
+        const fid = fidEntries[0] as PerformanceEntry & { processingStart: number; startTime: number };
         console.log(`⚡ FID: ${(fid.processingStart - fid.startTime).toFixed(2)}ms`);
       }
 
       // Cumulative Layout Shift
-      const clsEntries = performance.getEntriesByType('layout-shift') as any[];
+      const clsEntries = performance.getEntriesByType('layout-shift') as Array<PerformanceEntry & { value: number }>;
       if (clsEntries.length > 0) {
         const cls = clsEntries.reduce((sum, entry) => sum + entry.value, 0);
         console.log(`📐 CLS: ${cls.toFixed(4)}`);

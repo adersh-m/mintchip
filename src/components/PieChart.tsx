@@ -24,7 +24,19 @@ const PieChart: React.FC<PieChartProps> = React.memo(({ data }) => {
     })), [data.categories]
   );
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  interface PieTooltipProps {
+    active?: boolean;
+    payload?: Array<{
+      payload: {
+        name: string;
+        value: number;
+        count: number;
+        percentage: number;
+      };
+    }>;
+  }
+
+  const CustomTooltip = ({ active, payload }: PieTooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
