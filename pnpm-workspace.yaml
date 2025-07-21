@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - '@firebase/util'
+  - cypress
+  - esbuild
+  - msw
+  - protobufjs
