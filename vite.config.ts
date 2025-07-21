@@ -24,44 +24,24 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
+    minify: 'esbuild',
     sourcemap: true,
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
           redux: ['@reduxjs/toolkit', 'react-redux'],
           router: ['react-router-dom'],
+          charts: ['recharts'],
         },
       },
     },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', '@reduxjs/toolkit', 'react-redux', 'recharts'],
   },
   define: {
     __DEV__: JSON.stringify(process.env.NODE_ENV === 'development'),
   },
 });
-=======
-  build: {
-    // Enable minification for better performance
-    minify: 'esbuild',
-    // Generate source maps for debugging
-    sourcemap: true,
-    // Optimize chunk splitting
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Vendor chunks for better caching
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          redux: ['@reduxjs/toolkit', 'react-redux'],
-          charts: ['recharts'],
-        },
-      },
-    },
-    // Set chunk size warning limit
-    chunkSizeWarningLimit: 1000,
-  },
-  // Enable dependency optimization
-  optimizeDeps: {
-    include: ['react', 'react-dom', '@reduxjs/toolkit', 'react-redux', 'recharts'],
-  },
-})
