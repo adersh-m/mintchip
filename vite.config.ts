@@ -39,3 +39,29 @@ export default defineConfig({
     __DEV__: JSON.stringify(process.env.NODE_ENV === 'development'),
   },
 });
+=======
+  build: {
+    // Enable minification for better performance
+    minify: 'esbuild',
+    // Generate source maps for debugging
+    sourcemap: true,
+    // Optimize chunk splitting
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks for better caching
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          redux: ['@reduxjs/toolkit', 'react-redux'],
+          charts: ['recharts'],
+        },
+      },
+    },
+    // Set chunk size warning limit
+    chunkSizeWarningLimit: 1000,
+  },
+  // Enable dependency optimization
+  optimizeDeps: {
+    include: ['react', 'react-dom', '@reduxjs/toolkit', 'react-redux', 'recharts'],
+  },
+})

@@ -1,14 +1,21 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
 
 export default function Navigation() {
     const location = useLocation();
     
-    const navItems = [
+    const navItems = useMemo(() => [
         { path: '/', label: 'Dashboard', icon: '🏠' },
         { path: '/transactions', label: 'Transactions', icon: '💰' },
         { path: '/budgets', label: 'Budgets', icon: '📊' },
+        { path: '/reports', label: 'Reports', icon: '📈' },
         { path: '/settings', label: 'Settings', icon: '⚙️' },
-    ];
+    ], []);
+
+    const handleLogout = useCallback(() => {
+        // TODO: Implement logout functionality
+        console.log('Logout clicked');
+    }, []);
 
     return (
         <nav className="bg-white shadow-sm border-b">
@@ -36,7 +43,10 @@ export default function Navigation() {
                         </div>
                     </div>
                     <div className="flex items-center">
-                        <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                        <button 
+                            onClick={handleLogout}
+                            className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors"
+                        >
                             Logout
                         </button>
                     </div>
