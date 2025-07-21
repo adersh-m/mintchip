@@ -4,3 +4,7 @@ onlyBuiltDependencies:
   - esbuild
   - msw
   - protobufjs
+
+packages:
+  - 'packages/*'
+  - 'apps/*'
