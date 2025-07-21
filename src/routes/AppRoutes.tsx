@@ -3,12 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import Spinner from '../components/Spinner';
 import Layout from '../components/Layout';
-import TransactionsPage from '../pages/Transactions/TransactionsPage';
-import BudgetPage from '../pages/BudgetPage';
 
+// Lazy load all pages for better performance
 const LoginPage = lazy(() => import('../pages/Login/LoginPage'));
 const DashboardPage = lazy(() => import('../pages/Dashboard/DashboardPage'));
 const SettingsPage = lazy(() => import('../pages/Settings/SettingsPage'));
+const TransactionsPage = lazy(() => import('../pages/Transactions/TransactionsPage'));
+const BudgetPage = lazy(() => import('../pages/BudgetPage'));
+const ReportsPage = lazy(() => import('../pages/ReportsPage'));
 
 export default function AppRoutes() {
   return (
@@ -25,6 +27,7 @@ export default function AppRoutes() {
             <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
             <Route path="/transactions" element={<Layout><TransactionsPage /></Layout>} />
             <Route path="/budgets" element={<Layout><BudgetPage /></Layout>} />
+            <Route path="/reports" element={<Layout><ReportsPage /></Layout>} />
           </Route>
 
           {/* fallback */}
