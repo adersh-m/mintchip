@@ -28,15 +28,41 @@ This template provides a minimal setup to get React working in Vite with HMR and
 - pnpm (recommended) or npm
 - Firebase account for authentication and data storage
 
+### Quick Setup
+
+1. **Clone and install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+2. **Environment is pre-configured** ✅
+   - Development: `pnpm dev` (uses mock API)
+   - Production: `pnpm build` (uses real API)
+   - Optional: Create `.env.local` for personal overrides
+
+3. **Start development server**
+
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:5173](http://localhost:5173)
+
+📖 **For detailed setup and development workflow, see [DEVELOPMENT.md](DEVELOPMENT.md)**
+
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/adersh-m/mintchip.git
    cd mintchip
    ```
 
 2. **Install dependencies**
+
    ```bash
    pnpm install
    ```
